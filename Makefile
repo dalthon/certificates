@@ -1,3 +1,5 @@
+ROOT_FOLDER ?= `pwd`
+
 ROOT_CA_FOLDER ?= certificate_authorities
 ROOT_CA_NAME ?= root_ca
 ROOT_CA_CN_NAME ?= $(ROOT_CA_NAME)
@@ -47,7 +49,18 @@ $(CERTIFICATE_FOLDER)/%.crt: $(CERTIFICATE_FOLDER)/%.csr $(ROOT_CA_FOLDER)/$(ROO
 	  -in $< \
 	  -out $@
 
+.PHONY: build
+build:
+	docker build -t dalthon/certificates .
+
+.PHONY: shell
+shell:
+	docker run --rm -it \
+		-v $(ROOT_FOLDER)/certificates:/certificates/certificates \
+		-v $(ROOT_FOLDER)/certificate_authorities:/certificates/certificate_authorities \
+		dalthon/certificates ash
+
 .PHONY: wipe
 wipe:
-	rm -rf $(ROOT_CA_FOLDER)
-	rm -rf $(CERTIFICATE_FOLDER)
+	rm -rf $(ROOT_CA_FOLDER)/*
+	rm -rf $(CERTIFICATE_FOLDER)/*
