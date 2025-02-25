@@ -8,11 +8,11 @@ ROOT_CA_SUBJ := "/CN=$(ROOT_CA_CN_NAME)/O=$(ROOT_CA_CN_NAME)"
 CERTIFICATE_FOLDER ?= certificates
 CERTIFICATE_EXPIRATION ?= 3650
 
-default: certificate_authority
+default: certificate
 
 .PHONY: certificate_authority
 certificate_authority:
-	make $(ROOT_CA_FOLDER)/$(ROOT_CA_NAME).crt
+	make $(ROOT_CA_FOLDER)/$(ROOT_CA_NAME).crt $(ROOT_CA_FOLDER)/$(ROOT_CA_NAME).key
 
 $(ROOT_CA_FOLDER):
 	mkdir -p $@
@@ -23,8 +23,14 @@ $(ROOT_CA_FOLDER)/$(ROOT_CA_NAME).key: $(ROOT_CA_FOLDER)
 $(ROOT_CA_FOLDER)/%.crt: $(ROOT_CA_FOLDER)/%.key
 	openssl req -x509 -key $< -out $@ -subj $(ROOT_CA_SUBJ)
 
+.PHONY: certificate
+certificate:
+	make certificate_authority
+	make $(CERTIFICATE_FOLDER)/$(DOMAIN).crt $(CERTIFICATE_FOLDER)/$(DOMAIN).key
+
 .PHONY: certificate-%
 certificate-%:
+	make certificate_authority
 	make $(CERTIFICATE_FOLDER)/$*.crt $(CERTIFICATE_FOLDER)/$*.key
 
 $(CERTIFICATE_FOLDER):
@@ -56,8 +62,8 @@ build:
 .PHONY: shell
 shell:
 	docker run --rm -it \
-		-v $(ROOT_FOLDER)/certificates:/certificates/certificates \
-		-v $(ROOT_FOLDER)/certificate_authorities:/certificates/certificate_authorities \
+		-v $(ROOT_FOLDER)/$(ROOT_CA_FOLDER):/certificates/$(ROOT_CA_FOLDER) \
+		-v $(ROOT_FOLDER)/$(CERTIFICATE_FOLDER):/certificates/$(CERTIFICATE_FOLDER) \
 		dalthon/certificates ash
 
 .PHONY: clean

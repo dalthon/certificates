@@ -5,7 +5,7 @@ req_extensions     = req_ext
 distinguished_name = req_distinguished_name
 
 [req_distinguished_name]
-commonName       = $DOMAIN
+commonName       = *.$DOMAIN
 organizationName = $ORG_NAME
 
 [req_ext]
