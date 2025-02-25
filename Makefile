@@ -60,7 +60,9 @@ shell:
 		-v $(ROOT_FOLDER)/certificate_authorities:/certificates/certificate_authorities \
 		dalthon/certificates ash
 
-.PHONY: wipe
-wipe:
-	rm -rf $(ROOT_CA_FOLDER)/*
-	rm -rf $(CERTIFICATE_FOLDER)/*
+.PHONY: clean
+clean:
+	rm -rf $(ROOT_CA_FOLDER)/*.crt
+	rm -rf $(ROOT_CA_FOLDER)/*.key
+	rm -rf $(CERTIFICATE_FOLDER)/*.crt
+	rm -rf $(CERTIFICATE_FOLDER)/*.key

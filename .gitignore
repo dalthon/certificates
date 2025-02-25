@@ -1,2 +1,4 @@
-certificate_authorities
-certificates
+certificate_authorities/*.crt
+certificate_authorities/*.key
+certificates/*.crt
+certificates/*.key
