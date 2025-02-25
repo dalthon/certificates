@@ -55,6 +55,10 @@ $(CERTIFICATE_FOLDER)/%.crt: $(CERTIFICATE_FOLDER)/%.csr $(ROOT_CA_FOLDER)/$(ROO
 	  -in $< \
 	  -out $@
 
+.PHONY: release
+release: build
+	docker push dalthon/certificates
+
 .PHONY: build
 build:
 	docker build -t dalthon/certificates .
