@@ -59,6 +59,13 @@ $(CERTIFICATE_FOLDER)/%.crt: $(CERTIFICATE_FOLDER)/%.csr $(ROOT_CA_FOLDER)/$(ROO
 release: build
 	docker push dalthon/certificates
 
+.PHONY: install
+install:
+	make certificate_authority
+	sudo apt-get install -y ca-certificates
+	sudo cp $(ROOT_CA_FOLDER)/*.crt /usr/local/share/ca-certificates
+	sudo update-ca-certificates
+
 .PHONY: build
 build:
 	docker build -t dalthon/certificates .
