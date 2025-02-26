@@ -73,6 +73,10 @@ This will create a certificate authority and certificate for the given configure
 domain. You don't need to worry about overwriting certificates by running this
 more than once, it only creates the files if they don't exists.
 
+There is a very nice example about how to use it with a nginx-proxy service at
+`docker-compose.yml` that expose `whoami.localhost` by `https` and redirects to
+`https` when any `http` request is performed.
+
 ## Cloning this repository
 
 You need to have installed:
