@@ -2,7 +2,7 @@ services:
   certificates:
     image: dalthon/certificates
     environment:
-      DOMAIN:                 localhost
+      DOMAIN:                 local.localhost
       ORG_NAME:               "Localhost Certificates"
       CERTIFICATE_EXPIRATION: 365
     volumes:
@@ -10,7 +10,7 @@ services:
       - ./certificate_authorities:/certificates/certificate_authorities
 
   proxy:
-    image: jwilder/nginx-proxy
+    image: jwilder/nginx-proxy:alpine
     ports:
       - 80:80
       - 443:443
@@ -23,7 +23,7 @@ services:
   whoami:
     image: jwilder/whoami
     environment:
-      VIRTUAL_HOST: whoami.localhost
-      CERT_NAME:    localhost
+      VIRTUAL_HOST: whoami.local.localhost
+      CERT_NAME:    local.localhost
     depends_on:
       - proxy
