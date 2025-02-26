@@ -8,3 +8,5 @@ USER user
 WORKDIR /certificates
 
 COPY --chown=user:user Makefile csr.conf.template /certificates
+
+CMD ["make", "certificate"]
